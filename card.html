@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجري الإلكتروني - تصميم جديد</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1 class="logo"><a href="#">متجري</a></h1>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="./product.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                
+                    <li><a href="#"><i class="fas fa-shopping-cart"></i> سلة التسوق</a></li>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <a href="#"><i class="fas fa-search"></i></a>
+                <a href="#"><i class="fas fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://picsum.photos/seed/fashion_ecommerce_hero/1920/800');">
+            <div class="container">
+                <h2>أحدث صيحات الموضة بين يديك</h2>
+                <p>اكتشف مجموعتنا الحصرية من الملابس والإكسسوارات العصرية.</p>
+                <a href="#" class="btn btn-primary">تسوق الآن</a>
+            </div>
+        </section>
+<div class="product-container"></div>
+    </main>
+
+    
+    <script>
+        
+  var container = document.querySelector('.product-container');
+ 
+     products =  localStorage.getItem('products')
+    if (!products || JSON.parse(products).length === 0) {
+         container.innerHTML=`
+     <h2 style="color: red; text-align: center;">لا توجد منتجات في السلة!</h2>
+    `
+ 
+}else{
+     products = JSON.parse(products); 
+  renderProducts(products);
+   
+}
+     function renderProducts(products) {
+         console.log('products',products); container.innerHTML = '';
+
+  products.forEach(product => {
+    var card = document.createElement('div');
+    card.style.cursor='pointer'
+    card.className = 'product-card';
+
+    card.innerHTML = `
+      <img src="${product.image}" alt="${product.title}" width="100" />
+      <h3>${product.title}</h3>
+      <p>${product.price} $</p>
+      `;
+         var Delete = document.createElement('button');
+Delete.textContent = 'Delete'; 
+Delete.className = 'delete-button'; 
+Delete.style.marginTop = '10px'; 
+
+card.appendChild(Delete); 
+
+
+   
+   
+
+    container.appendChild(card);
+
+Delete.addEventListener('click',function(){
+   card.remove();
+   products=[];
+ localStorage.setItem("products", JSON.stringify(products));
+
+
+})
+
+  });
+}
+
+
+     
+    </script>
+    <!-- <script src="./script.js"></script> -->
+</body>
+</html>
