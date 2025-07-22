@@ -5,64 +5,68 @@ fetch('https://fakestoreapi.com/products')
   .then(res => res.json())
   .then(data => {
     products = data;
-    renderProducts(products);
+    AllProducts(products);
   });
-
-function renderProducts(products) {
-  const container = document.querySelector('.product-container');
+/////////////////// hamada product
+function AllProducts(products) {
+   container = document.querySelector('.product-container');
   container.innerHTML = '';
 
-  products.forEach(product => {
-    const card = document.createElement('div');
-    card.style.cursor='pointer'
-    card.className = 'product-card';
+ for ( i = 0; i < products.length; i++) {
+  const product = products[i];
 
-    card.innerHTML = `
-      <img src="${product.image}" alt="${product.title}" width="100" />
-      <h3>${product.title}</h3>
-      <p>${product.price} $</p>
-    `;
+  const card = document.createElement('div');
+  card.style.cursor = 'pointer';
+  card.className = 'product-card';
 
-   
-    card.addEventListener('click', () => {
+  card.innerHTML = `
+    <img src="${product.image}" alt="${product.title}" width="100" />
+    <h3>${product.title}</h3>
+    <p>${product.price} $</p>
+  `;
 
-      if (!targetValue.includes(product)) {
-        targetValue.push(product);
-        console.log("Added to cart:", product);
-       var PreProduct=JSON.stringify (targetValue);
+  card.addEventListener('click', () => {
+    if (!targetValue.includes(product)) {
+      targetValue.push(product);
+      console.log("Hamada add to cart:", product);
 
-        localStorage .setItem("products",PreProduct)
-      } else {
-        console.log("Already in cart");
-      }
-      updateShoppingCartIcon();
-    });
+      var productChange = JSON.stringify(targetValue);
+      localStorage.setItem("products", productChange);
+    } else {
+      console.log("Hamada in cart");
+    }
 
-    container.appendChild(card);
+    update();
   });
+
+  container.appendChild(card);
 }
 
-function updateShoppingCartIcon() {
-  const shoppingCart = document.querySelector('.fa-shopping-cart');
-  let counter = shoppingCart.querySelector('.cart-counter');
+}
+////////////////// card 
+function update() {
+   cart = document.querySelector('.fa-shopping-cart');
+  let counter = cart.querySelector('.cart-counter');
+  console.log("counter",counter);
+  
 
   if (!counter) {
     counter = document.createElement('span');
     counter.classList.add('cart-counter');
-    shoppingCart.appendChild(counter);
+    cart.appendChild(counter);
   }
 
   if (targetValue.length > 0) {
     counter.textContent = targetValue.length;
-    shoppingCart.classList.add('has-items');
+    cart.classList.add('has-items');
   } else {
     counter.textContent = '';
-    shoppingCart.classList.remove('has-items');
+    cart.classList.remove('has-items');
   }
 }
-
-const name = localStorage.getItem('name');
-const nameUser = JSON.parse(name);
+////////////////// show name
+ name = localStorage.getItem('name');
+ nameUser = JSON.parse(name);
 console.log("nameUser", nameUser);
 
 if (nameUser) {
@@ -72,23 +76,33 @@ if (nameUser) {
 
 }
 
-
+/////////////////// search
 search=document.querySelector('.search-input').addEventListener('keyup',function(e){
-  const title = e.target.value.toLowerCase();
+
+   title = e.target.value.toLowerCase();
 
 
-  const filteredProducts = products.filter(product =>
-    product.title.toLowerCase().includes(title)
-  );
+ let searchProduct = [];
+
+for (let i = 0; i < products.length; i++) {
+  const product = products[i];
+
+  if (product.title.toLowerCase().includes(title)) {
+    searchProduct.push(product);
+  }
+}
+
 
  
-  renderProducts(filteredProducts);
+  AllProducts(searchProduct);
  
   
 })
+///////////// dark mode, light mode
 document.querySelector('.fa-moon').addEventListener('click', function() {
   
   if (document.body.classList.contains('dark-mode')) {
+    
     document.body.classList.remove('dark-mode');
     document.body.style.backgroundColor = 'white';
         document.body.style.color = 'black'; 

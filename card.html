@@ -43,6 +43,9 @@
   var container = document.querySelector('.product-container');
  
      products =  localStorage.getItem('products')
+     console.log("products",products);
+     /// بتتحول علشان جايه string
+     
     if (!products || JSON.parse(products).length === 0) {
          container.innerHTML=`
      <h2 style="color: red; text-align: center;">لا توجد منتجات في السلة!</h2>
@@ -50,10 +53,10 @@
  
 }else{
      products = JSON.parse(products); 
-  renderProducts(products);
+  ShowProduct(products);
    
 }
-     function renderProducts(products) {
+     function ShowProduct(products) {
          console.log('products',products); container.innerHTML = '';
 
   products.forEach(product => {
@@ -82,6 +85,7 @@ card.appendChild(Delete);
 Delete.addEventListener('click',function(){
    card.remove();
    products=[];
+   ///// برجعها تانى فاضيه عشان لما اعمل refresh ميشوفش فى حاجه متخزنه فى local storage
  localStorage.setItem("products", JSON.stringify(products));
 
 
